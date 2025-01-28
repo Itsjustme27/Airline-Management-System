@@ -1,5 +1,5 @@
 @startuml use_case
-
+title Airline Management System Use Case Diagram
 actor Admin
 actor "Front Desk Officer" as FrontDesk
 actor Customer
@@ -41,4 +41,10 @@ UC4 --> UC8: "Send Payment Confirmation" <<include>>
 UC2 --> UC9: "Send Reservation Confirmation" <<include>>
 UC7 --> UC10: "Send Flight Status Updates" <<extend>>
 
+legend right
+    Made by Prayush Hada
+end legend
+
 @enduml
+
+
