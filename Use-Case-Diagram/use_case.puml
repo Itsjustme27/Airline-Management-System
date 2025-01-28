@@ -1,0 +1,44 @@
+@startuml use_case
+
+actor Admin
+actor "Front Desk Officer" as FrontDesk
+actor Customer
+actor "Pilot/Crew" as PilotCrew
+actor System
+
+usecase "Search Flights" as UC1
+usecase "Create/Modify/View Reservation" as UC2
+usecase "Assign Seats to Passengers" as UC3
+usecase "Make Payment for Reservation" as UC4
+usecase "Update Flight Schedule" as UC5
+usecase "Assign Pilots and Crew" as UC6
+usecase "Send Notifications" as UC7
+usecase "Send Payment Confirmation" as UC8
+usecase "Send Reservation Confirmation" as UC9
+usecase "Send Flight Status Updates" as UC10
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC4
+
+FrontDesk --> UC2
+FrontDesk --> UC3
+FrontDesk --> UC4
+
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+
+PilotCrew --> UC6
+
+UC2 --> UC4: "Make Payment"
+UC3 --> UC2: "Reservation Details"
+UC7 --> Customer: "Flight Status Updates"
+UC7 --> FrontDesk: "Reservation Notifications"
+UC7 --> Admin: "Flight Schedule Changes"
+
+UC4 --> UC8: "Send Payment Confirmation" <<include>>
+UC2 --> UC9: "Send Reservation Confirmation" <<include>>
+UC7 --> UC10: "Send Flight Status Updates" <<extend>>
+
+@enduml

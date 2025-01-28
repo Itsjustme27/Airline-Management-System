@@ -1,0 +1,99 @@
+@startuml class_diagram
+
+class Airline {
+  - name: String
+  - airlineCode: String
+  + createFlight(): void
+}
+
+class Airport {
+  - name: String
+  - address: String
+  - airportCode: String
+}
+
+class Aircraft {
+  - name: String
+  - model: String
+  - manufacturingYear: int
+}
+
+class Flight {
+  - flightNumber: String
+  - departureAirport: Airport
+  - arrivalAirport: Airport
+  - assignedAircraft: Aircraft
+  + assignAircraft(a: Aircraft): void
+}
+
+class FlightInstance {
+  - flightInstanceID: String
+  - flight: Flight
+  - schedule: Schedule
+  + createInstance(): void
+}
+
+class Schedule {
+  - startDate: Date
+  - endDate: Date
+}
+
+class WeeklySchedule {
+  - recurringDays: List<String>
+}
+
+class CustomSchedule {
+  - customDates: List<Date>
+}
+
+class FlightReservation {
+  - reservationNumber: String
+  - passengers: List<Passenger>
+  - seatAssignments: List<FlightSeat>
+  - reservationStatus: String
+}
+
+class Itinerary {
+  - flights: List<FlightInstance>
+}
+
+class FlightSeat {
+  - seatNumber: String
+  - seatClass: String
+  + assignSeat(): void
+}
+
+class Payment {
+  - paymentID: String
+  - amount: float
+  - paymentStatus: String
+  + processPayment(): void
+}
+
+class Notification {
+  - notificationID: String
+  - notificationType: String
+  + sendNotification(): void
+}
+
+class Passenger {
+  - name: String
+  - passportNumber: String
+  + bookTicket(): void
+}
+
+Airline "1" -- "*" Airport: operates
+Airline "1" -- "*" Aircraft: owns
+Flight "1" -- "1..*" FlightInstance: has
+FlightInstance "1" -- "1" Flight: represents
+FlightInstance "1" -- "*" FlightReservation: isReservedFor
+Flight "1" -- "1" Aircraft: assignedTo
+FlightReservation "1" -- "*" FlightSeat: assigns
+Itinerary "1" -- "*" FlightInstance: contains
+Payment "1" -- "1" FlightReservation: processes
+Notification "1" -- "*" FlightReservation: sendsFor
+
+WeeklySchedule "1" -- "0..*" FlightInstance: appliesTo
+CustomSchedule "1" -- "0..*" FlightInstance: appliesTo
+
+@enduml

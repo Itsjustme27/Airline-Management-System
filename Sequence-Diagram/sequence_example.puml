@@ -1,0 +1,58 @@
+@startuml sequence_example
+actor Customer
+actor Admin
+participant FlightScheduleSystem
+participant ReservationSystem
+participant Database
+participant PaymentSystem
+participant NotificationService
+participant CrewAssignmentSystem
+
+Customer -> FlightScheduleSystem: Enter search criteria (date, source, destination)
+FlightScheduleSystem -> Database: Query available flights
+Database --> FlightScheduleSystem: Return matching flights
+FlightScheduleSystem --> Customer: Display available flight options
+Customer -> FlightScheduleSystem: Request flight schedule details (departure, arrival, seats, etc.)
+FlightScheduleSystem -> Database: Fetch flight schedule details
+Database --> FlightScheduleSystem: Return flight schedule details
+FlightScheduleSystem --> Customer: Display flight schedule details
+
+Customer -> ReservationSystem: Select flight(s) and provide passenger details
+
+alt Multi-flight Itinerary
+  ReservationSystem -> FlightScheduleSystem: Query and reserve multiple flights
+  FlightScheduleSystem -> Database: Reserve seats for all selected flights
+  Database --> FlightScheduleSystem: Reservation confirmation
+end
+
+ReservationSystem -> ReservationSystem: Add multiple passengers to the reservation
+alt Flight Available
+  ReservationSystem -> Database: Reserve seat(s)
+  ReservationSystem -> PaymentSystem: Process payment
+  PaymentSystem --> ReservationSystem: Payment confirmation
+  ReservationSystem -> NotificationService: Send reservation confirmation
+  NotificationService --> Customer: Reservation confirmation
+  ReservationSystem -> Database: Store reservation details
+else Flight Not Available
+  ReservationSystem -> Customer: Notify flight unavailable
+end
+
+Customer -> ReservationSystem: Cancel reservation or itinerary
+ReservationSystem -> Database: Update reservation status
+ReservationSystem -> NotificationService: Notify cancellation to customer
+NotificationService --> Customer: Cancellation confirmation
+
+Admin -> FlightScheduleSystem: Add new aircrafts, flights, and flight schedules
+Admin -> FlightScheduleSystem: Cancel pre-scheduled flight
+FlightScheduleSystem -> Database: Update flight status
+FlightScheduleSystem -> NotificationService: Notify all stakeholders
+NotificationService --> Customer: Flight cancellation/update notification
+
+Admin -> CrewAssignmentSystem: Assign pilots and crew members to flights
+CrewAssignmentSystem -> Database: Update crew assignment details
+
+@enduml
+
+
+
+
