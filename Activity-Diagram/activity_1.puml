@@ -1,0 +1,17 @@
+@startuml activity_1
+start
+:Search for available flights;
+if (Flights available?) then (yes)
+  :Select flight;
+  :Provide passenger details;
+  fork
+    :Reserve seat(s);
+  fork again
+    :Make payment;
+  end fork
+  :Send reservation confirmation;
+else (no)
+  :Display "No flights available" message;
+endif
+stop
+@enduml

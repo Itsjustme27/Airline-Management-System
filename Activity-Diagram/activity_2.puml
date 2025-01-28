@@ -1,0 +1,21 @@
+@startuml activity_2
+start
+:View existing reservation;
+:Select reservation to cancel;
+fork
+  :Confirm cancellation;
+fork again
+  :Cancel cancellation;
+end fork
+if (Cancellation confirmed?) then (yes)
+  :Cancel reservation;
+  fork
+    :Update reservation status in system;
+  fork again
+    :Send cancellation confirmation;
+  end fork
+else (no)
+  :Display cancellation canceled message;
+endif
+stop
+@enduml
